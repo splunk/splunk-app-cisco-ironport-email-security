@@ -1,0 +1,89 @@
+Copyright (C) 2005-2012 Splunk Inc. All Rights Reserved.
+
+Add-on:             Splunk for Cisco IronPort E-Mail Security Appliance (ESA)
+Current Version:    2.0
+Last Modified:	    2012-04-01
+Splunk Version:	    4.3 and higher
+Author:             Splunk
+
+The Cisco ESA add-on allows you to consume, analyze, and report on Cisco ESA data. This add-on will process all data that has a sourcetype of cisco_esa. The Cisco ESA add-on is designed to work with the Splunk Cisco Security Suite; install these together to access reports and dashboards that give you visual insight into your Cisco ESA data.
+
+##### What's New #####
+2.0 (2012-04-01)
+- Major updaate to the app.
+- Completely change the look and feel of the app.
+- Refactor the code base.
+
+1.0.0 (02.24.11, build 96658)
+- Updated to provide compatibility with Splunk 4.2
+- Updated to include a setup application
+
+##### Technology Add-on Details ######
+
+Sourcetype(s):             cisco_esa
+Supported Technologies:    Cisco IronPort E-Mail Security Appliance (ESA)	
+Compatible Solutions:      Cisco Security Suite
+Has Index-time Operations: Yes (needs to be deployed on indexers)
+
+###### Installation Instructions ######
+
+By default, the Cisco ESA add-on assumes that your data will be indexed with a sourcetype of "cisco_esa". The easiest way to begin indexing Cisco ESA data is to define the sourcetype for the data input that is bringing in the data. See The following link for more information on how to do this:
+
+	http://docs.splunk.com/Documentation/Splunk/latest/Data/Bypassautomaticsourcetypeassignment
+
+After you have installed the Cisco ESA add-on, you will need to setup the add-on and set the sourcetype of your existing data (if you have already indexed ESA data). See below for details.
+
++++ Configuring Cisco ESA to work with existing data (not sourcetyped as cisco_esa) +++
+
+If you already have ESA data indexed under a different sourcetype you will need to update the props.conf and eventtypes.conf files in the local directory of this add-on. This step is unnecessary if your data is already sourcetyped as cisco_esa or if you do not have ESA data indexed already under a different sourcetype.
+
+First, create the following entry in props.conf, replacing the stanza name with your ESA sourcetype:
+
+	[enter_sourcetype_here]
+	REPORT-ironport = get_mid, get_to, get_from, get_icid, get_dcid, get_attach_name, get_attach_size, get_subject1, get_subject2, get_subject3
+
+Second, create the following entry in eventtypes.conf, replacing the search terms with your ESA sourcetype:
+
+	[cisco_esa]
+	search = #Enter your search here (e.g. sourcetype=esa_cisco)
+	tags = cisco e-mail security
+
++++ Manual setup and configuration +++
+
+Optionally, you can disable the saved search that is used for reporting via the configuration files themselves. Follow the steps to disable the saved search manually. Note that the steps below perform the same action that is performed by the setup app.
+
+1. Open or create the savedsearches.conf file located at $SPLUNK_HOME/etc/apps/Splunk_CiscoIronportEmailSecurity/local/savedsearches.conf
+2. Modify the local savedsearches.conf file to include the following stanza:
+
+	[Cisco IronPort E-mail - DataCube]
+	enableSched = 0
+
+3. Save the changes made to the savedsearches.conf file.
+4. Restart Splunk for the changes to take effect.  
+
+This add-on has been renamed from previous versions (namely "_addon" has been removed).  Optionally you may choose to manually remove the "cisco_esa_addon" add-on from the file system.  If any changes exist in local they will need to be manually migrated over to this add-on.
+
+###### Troubleshooting the add-on ######
+
+If you do not see the Cisco ESA data or if the data is not being processed accordingly then the data is most likely sourcetyped incorrectly. You should be able to perform a search for sourcetype=cisco_esa in order to find all of the ESA data. If you have ESA data with a different sourcetype, then you will need to configure the add-on to recognize this data; see "Configuring Cisco ESA to work with existing data" above for details.
+
+###### Getting Help ######
+
+Additional information regarding the installation and configuration of the Cisco ESA add-on can be found here:
+
+	http://splunk-base.splunk.com/answers/3360/how-do-i-install-the-cisco-ironport-e-mail-add-on
+
+See the Splunk answers to view existing questions and answers regarding the Cisco ESA add-on or to ask a question yourself:
+
+	http://splunk-base.splunk.com/search/?q=cisco+esa&Submit=search
+
+Alternatively, you can contact Splunk technical support if you need assistance: support@splunk.com
+
+###### More Information ######
+
+Below is a list of links for more information:
+
+  * Splunk add-on overview: http://splunk-base.splunk.com/apps/22305/splunk-for-cisco-ironport-email-security-appliance
+  * Questions and answers (Cisco ESA app specific): http://splunk-base.splunk.com/search/?q=cisco+esa&Submit=search
+  * Questions and answers (General Splunk): http://splunk-base.splunk.com/answers/
+  * General support: http://www.splunk.com/support
